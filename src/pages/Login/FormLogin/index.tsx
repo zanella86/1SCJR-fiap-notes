@@ -3,11 +3,13 @@ import React, {
   FormEvent,
   FormEventHandler,
   useCallback,
+  useContext,
   useState,
 } from "react";
 import { Link } from "react-router-dom";
 import Button from "../../../components/Button";
 import Checkbox from "../../../components/Checkbox";
+import { Context } from "../../../Context/AuthContext";
 import { Form } from "./styles";
 
 export interface FormValueState {
@@ -20,6 +22,8 @@ interface FormLoginProps {
 }
 
 function FormLogin({ handleSubmit }: FormLoginProps) {
+  const { loading: loadingAuth } = useContext(Context);
+
   const [formValues, setFormValues] = useState<FormValueState>({
     username: "",
     password: "",
@@ -36,23 +40,27 @@ function FormLogin({ handleSubmit }: FormLoginProps) {
   return (
     <Form onSubmit={onSubmit}>
       <h1>Login</h1>
-      <input type="text"
+      <input
+        type="text"
         id="username"
         value={formValues.username}
         onChange={handleInput}
         autoFocus
         placeholder="Insira seu usuário"
       />
-      <input type="password"
+      <input
+        type="password"
         id="password"
         value={formValues.password}
         onChange={handleInput}
         autoFocus
         placeholder="Insira sua senha"
       />
-      
-      <Button handleClick={() => {}}>Entrar</Button>
-      <Link to="/register">Register</Link>
+
+      <Button handleClick={() => {}}>
+        {loadingAuth ? "Carregando..." : "Entrar"}
+      </Button>
+      <Link to="/register">Registrar</Link>
     </Form>
   );
 }

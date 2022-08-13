@@ -21,7 +21,7 @@ function Home() {
     (async () => {
       const response = await NotesService.getNotes();
 
-      setNotes(response.data);
+      setNotes((prevState) => [...prevState, response.data]);
       setLoading(false);
     })();
   }, []);
@@ -31,7 +31,7 @@ function Home() {
       (async () => {
         const response = await NotesService.postNotes(payload);
 
-        setNotes((prevState) => [...prevState, response.data]);
+        setNotes([...notes, response.data]);
 
         setShowModal(false);
       })();
@@ -65,7 +65,11 @@ function Home() {
       )}
       <Container>
         {notes.map((note) => (
-          <CardNote key={note.id} handleDelete={deleteNote} note={note}></CardNote>
+          <CardNote
+            key={note.id}
+            handleDelete={deleteNote}
+            note={note}
+          ></CardNote>
         ))}
         <FabButton position="left" handleClick={() => setShowModal(true)}>
           +
