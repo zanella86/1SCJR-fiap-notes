@@ -21,7 +21,7 @@ function Home() {
     (async () => {
       const response = await NotesService.getNotes();
 
-      setNotes((prevState) => [...prevState, response.data]);
+      setNotes(response.data);
       setLoading(false);
     })();
   }, []);
