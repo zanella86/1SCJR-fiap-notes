@@ -45,6 +45,11 @@ function Home() {
     }
   }, [notes]);
 
+  const editNote = useCallback((id: number) => {
+    // TODO
+    window.alert("Nota: " + id + "\nTo implement...");
+  }, [notes]);
+
   const prioritizeNotes = useCallback(() => {
     notes.sort((a: Note, b: Note) => (a.urgent < b.urgent) ? 1 : -1);
     setNotes([...notes]);
@@ -71,6 +76,7 @@ function Home() {
           <CardNote
             key={note.id}
             handleDelete={deleteNote}
+            handleEdit={editNote}
             note={note}
           ></CardNote>
         ))}

@@ -36,7 +36,7 @@ Branchs
 
 Configuração inicial do projeto (no repositório de origem):
 
-> npm create vite@latest
+`npm create vite@latest`
 
 > Opções: y / React / TypeScript
 
@@ -59,6 +59,13 @@ Inicie o ambiente utilizando o comando: `npm run dev`
 3. Verifique que as notas urgentes (vermelhas) assumiram posições prioritárias em relação as notas comuns.
 
 ![Test-PrioritizeNotesResult](/images/test_prioritize_notes_02.PNG)
+
+### Funcionalidade de edição das notas
+
+1. Adicionado na nota um novo botão para chamada da interface de edição:
+
+![Test-EditNote](/images/test_edit_note_01.PNG)
+
 
 ## REFERÊNCIAS
 

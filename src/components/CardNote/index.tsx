@@ -5,9 +5,10 @@ import { Container } from "./styles";
 interface NoteProps {
   note: Note;
   handleDelete: (id: number) => void;
+  handleEdit: (id: number) => void;
 }
 
-function CardNote({ note, handleDelete }: NoteProps) {
+function CardNote({ note, handleDelete, handleEdit }: NoteProps) {
   return (
     <>
       <Container urgent={note.urgent}>
@@ -19,6 +20,11 @@ function CardNote({ note, handleDelete }: NoteProps) {
               priority_high
             </span>            
         )} 
+
+        <span className="material-icons" id="edit" onClick={() => handleEdit(note.id)}>
+          {" "}
+          edit
+        </span>
 
         <span className="material-icons" id="delete" onClick={() => handleDelete(note.id)}>
           {" "}
