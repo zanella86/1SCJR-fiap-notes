@@ -10,15 +10,17 @@ interface NoteProps {
 function CardNote({ note, handleDelete }: NoteProps) {
   return (
     <>
-      <Container>
-        <p>{formatDate(new Date(note?.date))}</p>
+      <Container urgent={note.urgent}>
+        <p>#{note.id} - {formatDate(new Date(note?.date))}</p>
         <p>{note.text}</p>
+
         {note.urgent && (
-          <span className="material-icons" id="priority">
-            priority_high
-          </span>
-        )}
-        <span className="material-icons" onClick={() => handleDelete(note.id)}>
+            <span className="material-icons" id="priority">
+              priority_high
+            </span>            
+        )} 
+
+        <span className="material-icons" id="delete" onClick={() => handleDelete(note.id)}>
           {" "}
           delete_forever{" "}
         </span>
