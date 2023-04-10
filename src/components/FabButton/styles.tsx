@@ -6,7 +6,7 @@ interface PropsFab {
 
 export const FabButtonStyled = styled.button<PropsFab>`
   position: absolute;
-  ${(props) => (props.position === "left" ? "left: 5px;" : "right: 5px;")}
+  ${(props) => (props.position)}
   top: 5px;
   color: white;
 
@@ -29,7 +29,7 @@ export const FabButtonStyled = styled.button<PropsFab>`
     color: var(--white);
     background-color: #ed145b;
     box-shadow: 2px 10px 10px #0009;
-    ${(props) => (props.position === "left" ? "transform: scale(2) translateX(5px) translateY(5px);" : "transform: scale(2) translateX(-5px) translateY(5px);")}
+    transform: scale(2) translateX(5px) translateY(5px);
   }
 
   span {

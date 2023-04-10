@@ -36,7 +36,7 @@ export default function useAuth() {
         const err = error as ErrorResponse;
         alert(err.response?.data.erro);
       } else {
-        alert("Erro insesperado");
+        alert("Erro não esperado");
       }
     } finally {
       setLoading(false);
@@ -57,7 +57,7 @@ export default function useAuth() {
         const err = error as ErrorResponse;
         alert(err.response?.data.erro);
       } else {
-        alert("Erro insesperado");
+        alert("Erro não esperado");
       }
     } finally {
       setLoading(false);

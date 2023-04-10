@@ -20,7 +20,6 @@ function Home() {
   useEffect(() => {
     (async () => {
       const response = await NotesService.getNotes();
-
       setNotes(response.data);
       setLoading(false);
     })();
@@ -30,9 +29,7 @@ function Home() {
     (payload: FormValueState) => {
       (async () => {
         const response = await NotesService.postNotes(payload);
-
         setNotes([...notes, response.data]);
-
         setShowModal(false);
       })();
     },
@@ -40,12 +37,18 @@ function Home() {
   );
 
   const deleteNote = useCallback((id: number) => {
-    (async () => {
-      await NotesService.deleteNote({ id });
+    if(window.confirm("Deseja mesmo excluir a nota " + id + "?")) {     
+      (async () => {
+        await NotesService.deleteNote({ id });
+        setNotes((prevState) => prevState.filter((note) => note.id !== id));
+      })();
+    }
+  }, [notes]);
 
-      setNotes((prevState) => prevState.filter((note) => note.id !== id));
-    })();
-  }, []);
+  const prioritizeNotes = useCallback(() => {
+    notes.sort((a: Note, b: Note) => (a.urgent < b.urgent) ? 1 : -1);
+    setNotes([...notes]);
+  }, [notes]);
 
   useEffect(() => {
     if (!authenticated) navigate("/");
@@ -71,10 +74,13 @@ function Home() {
             note={note}
           ></CardNote>
         ))}
-        <FabButton position="left" handleClick={() => setShowModal(true)}>
+        <FabButton position="left: 5px;" handleClick={() => setShowModal(true)}>
           +
         </FabButton>
-        <FabButton position="right" handleClick={handleLogout}>
+        <FabButton position="left: 60px;" handleClick={prioritizeNotes}>
+          !
+        </FabButton>
+        <FabButton position="right: 30px;" handleClick={handleLogout}>
           <span className="material-icons">logout</span>
         </FabButton>
       </Container>
