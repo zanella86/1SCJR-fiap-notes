@@ -1,6 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import CardNote from "../../components/CardNote";
 import FabButton from "../../components/FabButton";
+import SearchSection from "../../components/SearchSection";
 import FormNote, { FormValueState } from "./FormNote";
 import Modal from "../../components/Modal";
 import { NotesService } from "../../services/notes/note-service";
@@ -13,23 +14,29 @@ import Loading from "../../components/Loading";
 function Home() {
   const { handleLogout, authenticated } = useContext(Context);
   const [notes, setNotes] = useState<Note[]>([] as Note[]);
+  const [finalNotes, setFinalNotes] = useState<Note[]>([] as Note[]);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    (async () => {
-      const response = await NotesService.getNotes();
-      setNotes(response.data);
-      setLoading(false);
-    })();
+    listNote();
   }, []);
+
+
+  const listNote =  async () => {
+    const response = await NotesService.getNotes();
+    setFinalNotes(response.data);
+    setNotes(response.data);
+    setLoading(false);
+  }
 
   const createNote = useCallback(
     (payload: FormValueState) => {
       (async () => {
         const response = await NotesService.postNotes(payload);
-        setNotes([...notes, response.data]);
+        //setNotes([...notes, response.data]);
+        setFinalNotes([...finalNotes, response.data]);
         setShowModal(false);
       })();
     },
@@ -50,6 +57,13 @@ function Home() {
     setNotes([...notes]);
   }, [notes]);
 
+  const filterNotes = useCallback((text: string) => {
+    setLoading(true);
+    var filteredNotes = finalNotes.filter((note: Note) =>  note.text.includes(text));
+    setNotes([...filteredNotes]);
+    setLoading(false);
+  }, [notes]);
+
   useEffect(() => {
     if (!authenticated) navigate("/");
   }, [authenticated]);
@@ -66,6 +80,7 @@ function Home() {
           <FormNote handleSubmit={createNote} />
         </Modal>
       )}
+      <SearchSection handleSearch={filterNotes}></SearchSection>
       <Container>
         {notes.map((note) => (
           <CardNote
