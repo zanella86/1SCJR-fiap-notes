@@ -4,18 +4,14 @@ import React, {
   } from "react";
 import { SearchBarStyled } from './styles';
 import Button from "../../components/Button";
-import FabButton from "../FabButton";
 
 interface SearchBarProps {
     handleSearch: (text: string) => void;
-  }
+    search: string;
+    onTextChange: (event: ChangeEvent<HTMLInputElement>) => void;
+}
 
-function SearchBar({handleSearch} : SearchBarProps) {
-
-    const [search, setSearch] = useState("");
-
-    const handleInput = (event: ChangeEvent<HTMLInputElement>) =>
-    setSearch(event.target.value);
+function SearchBar({handleSearch, onTextChange, search} : SearchBarProps) {
 
     const handleClick = () => {
         handleSearch(search);   
@@ -25,7 +21,7 @@ function SearchBar({handleSearch} : SearchBarProps) {
     <>
       <SearchBarStyled  
                 value={search} 
-                onChange={handleInput}
+                onChange={onTextChange}
                 placeholder="Pesquisar"></SearchBarStyled>
                 
       <Button handleClick={handleClick}>Pesquisar</Button>

@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useContext, useEffect, useState } from "react";
 import CardNote from "../../components/CardNote";
 import FabButton from "../../components/FabButton";
 import SearchSection from "../../components/SearchSection";
@@ -14,9 +14,10 @@ import Loading from "../../components/Loading";
 function Home() {
   const { handleLogout, authenticated } = useContext(Context);
   const [notes, setNotes] = useState<Note[]>([] as Note[]);
-  const [finalNotes, setFinalNotes] = useState<Note[]>([] as Note[]);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,7 +27,6 @@ function Home() {
 
   const listNote =  async () => {
     const response = await NotesService.getNotes();
-    setFinalNotes(response.data);
     setNotes(response.data);
     setLoading(false);
   }
@@ -34,14 +34,22 @@ function Home() {
   const createNote = useCallback(
     (payload: FormValueState) => {
       (async () => {
+        setLoading(true);
         const response = await NotesService.postNotes(payload);
-        //setNotes([...notes, response.data]);
-        setFinalNotes([...finalNotes, response.data]);
+        resetSearch();
         setShowModal(false);
       })();
     },
     [notes]
   );
+
+
+  const resetSearch = async () => {
+    setSearch("");
+    const response = await NotesService.getNotes();
+    setNotes([...response.data]) 
+    setLoading(false);
+  }
 
   const deleteNote = useCallback((id: number) => {
     if(window.confirm("Deseja mesmo excluir a nota " + id + "?")) {     
@@ -57,16 +65,18 @@ function Home() {
     setNotes([...notes]);
   }, [notes]);
 
-  const filterNotes = useCallback((text: string) => {
+  const filterNotes = useCallback(async (text: string) => {
     setLoading(true);
-    var filteredNotes = finalNotes.filter((note: Note) =>  note.text.includes(text));
-    setNotes([...filteredNotes]);
+    const response = await NotesService.getNotes();
+    setNotes([...response.data.filter((note: Note) =>  note.text.includes(text))]);
     setLoading(false);
   }, [notes]);
 
   useEffect(() => {
     if (!authenticated) navigate("/");
   }, [authenticated]);
+
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => setSearch(event.target.value);
 
   return (
     <>
@@ -80,7 +90,7 @@ function Home() {
           <FormNote handleSubmit={createNote} />
         </Modal>
       )}
-      <SearchSection handleSearch={filterNotes}></SearchSection>
+      <SearchSection handleSearch={filterNotes} onTextChange={handleSearchChange} search={search}></SearchSection>
       <Container>
         {notes.map((note) => (
           <CardNote
