@@ -61,11 +61,11 @@ Inicie o ambiente utilizando o comando: `npm run dev`
 ![Test-PrioritizeNotesResult](/images/test_prioritize_notes_02.PNG)
 
 ### Funcionalidade de filtro das notas:
-![Test-PrioritizeNotesResult](/images/test_filter_notes.PNG)
+![Test-PrioritizeNotesResult](/images/test_filter_notes.png)
 
-1.Digite o texto que deseja procurar
-2.Clique no botão pesquisar
-3.Para listar todos os itens novamente, apague o que foi digitado na pesquisa e clique no botão pesquisar
+1. Digite o texto que deseja procurar;
+2. Clique no botão pesquisar;
+3. Para listar todos os itens novamente, apague o que foi digitado na pesquisa e clique no botão pesquisar.
 
 ## REFERÊNCIAS
 
