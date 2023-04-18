@@ -6,21 +6,21 @@ import React, {
   useState,
 } from "react";
 import Button from "../../../components/Button";
-import { Note } from "../../../services/notes/types";
 import Checkbox from "../../../components/Checkbox";
+import { Note } from "../../../services/notes/types";
 import { Form } from "./styles";
 
-export interface FormValueState {
+export interface FormEditState {
   text: string;
   urgent: boolean;
 }
 
 interface FormNoteProps {
-  handleSubmit: (payload: FormValueState) => void;
+  handleSubmit: (payload: FormEditState) => void;
 }
 
 function FormNote({ handleSubmit }: FormNoteProps) {
-  const [formValues, setFormValues] = useState<FormValueState>({
+  const [formValues, setFormValues] = useState<FormEditState>({
     text: "",
     urgent: false,
   });
@@ -39,12 +39,22 @@ function FormNote({ handleSubmit }: FormNoteProps) {
 
   return (
     <Form onSubmit={onSubmit}>
+       {false &&
       <textarea
         value={formValues.text}
         onChange={handleInput}
         autoFocus
         placeholder="Insira o texto da nota"
       />
+       }
+       {true &&
+      <textarea
+        value={formValues.text}
+        onChange={handleInput}
+        autoFocus
+        placeholder="Insira o texto da nota"
+      />
+       }
       <Checkbox
         checked={formValues.urgent}
         handleChange={handleChangeUrgent}

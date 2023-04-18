@@ -2,6 +2,7 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import CardNote from "../../components/CardNote";
 import FabButton from "../../components/FabButton";
 import FormNote, { FormValueState } from "./FormNote";
+import FormNoteEdit, {FormEditValueState} from "./FormNoteEdit";
 import Modal from "../../components/Modal";
 import { NotesService } from "../../services/notes/note-service";
 import { Note } from "../../services/notes/types";
@@ -14,6 +15,7 @@ function Home() {
   const { handleLogout, authenticated } = useContext(Context);
   const [notes, setNotes] = useState<Note[]>([] as Note[]);
   const [showModal, setShowModal] = useState(false);
+  const [showModalEdit, setShowModalEdit] = useState(false);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -35,6 +37,17 @@ function Home() {
     },
     [notes]
   );
+  
+  const ediNote = useCallback((payload: FormEditValueState) => {
+      (async () => {
+        const response = await NotesService.postNotes(payload);
+        setNotes([...notes, response.data]);
+        setShowModal(false);
+      })();
+        //  window.alert("Nota: " + id + "\nTo implement...");
+    },
+    [notes]
+  );
 
   const deleteNote = useCallback((id: number) => {
     if(window.confirm("Deseja mesmo excluir a nota " + id + "?")) {     
@@ -47,7 +60,9 @@ function Home() {
 
   const editNote = useCallback((id: number) => {
     // TODO
-    window.alert("Nota: " + id + "\nTo implement...");
+    setShowModalEdit(true);
+    
+  //  window.alert("Nota: " + id + "\nTo implement...");
   }, [notes]);
 
   const prioritizeNotes = useCallback(() => {
@@ -69,6 +84,20 @@ function Home() {
           style={{ width: "100px" }}
         >
           <FormNote handleSubmit={createNote} />
+        </Modal>
+      )}
+      {showModalEdit && (
+        <Modal
+          title="Alterar nota"
+          handleClose={() => setShowModalEdit(false)}
+          style={{ width: "100px" }}
+        >
+          {notes.map((note) => (
+          <FormNoteEdit 
+            note={note}
+            handleSubmit={ediNote} 
+          ></FormNoteEdit>
+          ))}
         </Modal>
       )}
       <Container>

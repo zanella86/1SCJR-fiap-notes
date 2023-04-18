@@ -10,19 +10,21 @@ import { Note } from "../../../services/notes/types";
 import Checkbox from "../../../components/Checkbox";
 import { Form } from "./styles";
 
-export interface FormValueState {
+export interface FormEditValueState {
   text: string;
   urgent: boolean;
 }
 
 interface FormNoteProps {
-  handleSubmit: (payload: FormValueState) => void;
+  note: Note;
+  handleSubmit: (payload: FormEditValueState) => void;
 }
 
-function FormNote({ handleSubmit }: FormNoteProps) {
-  const [formValues, setFormValues] = useState<FormValueState>({
-    text: "",
-    urgent: false,
+function FormEditNote({note, handleSubmit}: FormNoteProps) {
+
+  const [formValues, setFormValues] = useState<FormEditValueState>({
+    text: note.text,
+    urgent: note.urgent,
   });
 
   const handleChangeUrgent = useCallback(() => {
@@ -55,4 +57,4 @@ function FormNote({ handleSubmit }: FormNoteProps) {
   );
 }
 
-export default FormNote;
+export default FormEditNote;

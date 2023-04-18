@@ -1,6 +1,7 @@
 import { Note } from "../../services/notes/types";
 import { formatDate } from "../../services/utils";
 import { Container } from "./styles";
+import {useState } from "react";
 
 interface NoteProps {
   note: Note;
