@@ -16,15 +16,15 @@ export interface FormEditValueState {
 }
 
 interface FormNoteProps {
-  note: Note;
+  note?: Note;
   handleSubmit: (payload: FormEditValueState) => void;
 }
 
-function FormEditNote({note, handleSubmit}: FormNoteProps) {
-
+function FormEditNote({ note, handleSubmit }: FormNoteProps) {
+  
   const [formValues, setFormValues] = useState<FormEditValueState>({
-    text: note.text,
-    urgent: note.urgent,
+    text: note?.text || "",
+    urgent: note?.urgent || false,
   });
 
   const handleChangeUrgent = useCallback(() => {

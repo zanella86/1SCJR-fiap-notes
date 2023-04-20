@@ -17,6 +17,8 @@ function Home() {
   const [showModal, setShowModal] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
   const [loading, setLoading] = useState(true);
+  //let editNoteItem = undefined;
+  const [editNoteItem, setEditNoteItem] = useState<Note>();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -59,10 +61,10 @@ function Home() {
   }, [notes]);
 
   const editNote = useCallback((id: number) => {
-    // TODO
-    setShowModalEdit(true);
     
-  //  window.alert("Nota: " + id + "\nTo implement...");
+    setShowModalEdit(true);
+    setEditNoteItem(notes.filter(x => x.id === id)[0]);
+ 
   }, [notes]);
 
   const prioritizeNotes = useCallback(() => {
@@ -92,12 +94,10 @@ function Home() {
           handleClose={() => setShowModalEdit(false)}
           style={{ width: "100px" }}
         >
-          {notes.map((note) => (
           <FormNoteEdit 
-            note={note}
+            note={editNoteItem}
             handleSubmit={ediNote} 
           ></FormNoteEdit>
-          ))}
         </Modal>
       )}
       <Container>
