@@ -64,7 +64,7 @@ Para efetuar login na aplicação, será necessário consultar os dados de acess
 
 ### Funcionalidade de filtro das notas:
 
-![Test-PrioritizeNotesResult](/images/test_filter_notes.PNG)
+![Test-PrioritizeNotesResult](/images/test_filter_notes_01.PNG)
 
 1. Digite o texto que deseja procurar;
 2. Clique no botão pesquisar;
