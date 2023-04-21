@@ -1,6 +1,7 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useContext, useEffect, useState } from "react";
 import CardNote from "../../components/CardNote";
 import FabButton from "../../components/FabButton";
+import SearchSection from "../../components/SearchSection";
 import FormNote, { FormValueState } from "./FormNote";
 import Modal from "../../components/Modal";
 import { NotesService } from "../../services/notes/note-service";
@@ -14,42 +15,98 @@ function Home() {
   const { handleLogout, authenticated } = useContext(Context);
   const [notes, setNotes] = useState<Note[]>([] as Note[]);
   const [showModal, setShowModal] = useState(false);
+  const [showModalEdit, setShowModalEdit] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [editNoteItem, setEditNoteItem] = useState<Note>();
   const navigate = useNavigate();
 
   useEffect(() => {
-    (async () => {
-      const response = await NotesService.getNotes();
-
-      setNotes(response.data);
-      setLoading(false);
-    })();
+    listNote();
   }, []);
+
+  const listNote =  async () => {
+    setLoading(true);
+    const response = await NotesService.getNotes();
+    setNotes(response.data);
+    setLoading(false);
+  }
 
   const createNote = useCallback(
     (payload: FormValueState) => {
       (async () => {
-        const response = await NotesService.postNotes(payload);
-
-        setNotes([...notes, response.data]);
-
         setShowModal(false);
+        setLoading(true);
+        const response = await NotesService.postNotes(payload);
+        setNotes([...notes, response.data]);
+        setLoading(false);
+      })();
+    },
+    [notes]
+  );
+  
+  const updateNote = useCallback((payload: FormValueState) => {
+      (async () => {
+        setShowModalEdit(false);
+        setLoading(true);
+        await NotesService.alterNote(payload);
+        setLoading(false);
+        selectNote(payload.id);
+      })();
+    },
+    [notes]
+  );
+
+  const selectNote = useCallback((id: number) => {
+      (async () => {
+        setLoading(true);
+        const response = await NotesService.getNote({id});
+
+        let index = notes.findIndex(nota => {
+          return nota.id === response.data.id;
+        });
+
+        notes.splice(index, 1, response.data);
+        setNotes(notes);
+        setLoading(false);
       })();
     },
     [notes]
   );
 
   const deleteNote = useCallback((id: number) => {
-    (async () => {
-      await NotesService.deleteNote({ id });
+    if(window.confirm("Deseja mesmo excluir a nota " + id + "?")) {     
+      (async () => {
+        setLoading(true);
+        await NotesService.deleteNote({ id });
+        setNotes((prevState) => prevState.filter((note) => note.id !== id));
+        setLoading(false);
+      })();
+    }
+  }, [notes]);
 
-      setNotes((prevState) => prevState.filter((note) => note.id !== id));
-    })();
-  }, []);
+  const editNote = useCallback((id: number) => {
+    setShowModalEdit(true);
+    setEditNoteItem(notes.filter(x => x.id === id)[0]);
+  }, [notes]);
+
+  const prioritizeNotes = useCallback(() => {
+    notes.sort((nota) => (nota.urgent == true) ? -1 : 0);
+    setNotes([...notes]);
+  }, [notes]);
+
+  const filterNotes = useCallback(async (text: string) => {
+    setLoading(true);
+    const response = await NotesService.getNotes();
+    setNotes([...response.data.filter((note: Note) =>  note.text.includes(text))]);
+    setLoading(false);
+  }, [notes]);
 
   useEffect(() => {
     if (!authenticated) navigate("/");
   }, [authenticated]);
+
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => setSearch(event.target.value);
 
   return (
     <>
@@ -63,18 +120,35 @@ function Home() {
           <FormNote handleSubmit={createNote} />
         </Modal>
       )}
+
+      <SearchSection handleSearch={filterNotes} onTextChange={handleSearchChange} search={search}></SearchSection>
+
+      {showModalEdit && (
+        <Modal
+          title="Alterar nota"
+          handleClose={() => setShowModalEdit(false)}
+          style={{ width: "100px" }}
+        >
+          <FormNote note={editNoteItem} handleSubmit={updateNote} />
+        </Modal>
+      )}
+
       <Container>
         {notes.map((note) => (
           <CardNote
             key={note.id}
             handleDelete={deleteNote}
+            handleEdit={editNote}
             note={note}
           ></CardNote>
         ))}
-        <FabButton position="left" handleClick={() => setShowModal(true)}>
+        <FabButton position="left: 5px;" handleClick={() => setShowModal(true)}>
           +
         </FabButton>
-        <FabButton position="right" handleClick={handleLogout}>
+        <FabButton position="left: 60px;" handleClick={prioritizeNotes}>
+          !
+        </FabButton>
+        <FabButton position="right: 30px;" handleClick={handleLogout}>
           <span className="material-icons">logout</span>
         </FabButton>
       </Container>
