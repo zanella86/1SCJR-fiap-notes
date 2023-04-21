@@ -36,7 +36,7 @@ Branchs
 
 Configuração inicial do projeto (no repositório de origem):
 
-> npm create vite@latest
+`npm create vite@latest`
 
 > Opções: y / React / TypeScript
 
@@ -50,6 +50,8 @@ Comando para geração de pacote: `npm run build`
 
 Inicie o ambiente utilizando o comando: `npm run dev`
 
+Para efetuar login na aplicação, será necessário consultar os dados de acesso do usuário padrão na [API](https://github.com/rafanleme/fiap-notes-api).
+
 ### Funcionalidade de classificação das notas:
 
 ![Test-PrioritizeNotes](/images/test_prioritize_notes_01.PNG)
@@ -61,11 +63,27 @@ Inicie o ambiente utilizando o comando: `npm run dev`
 ![Test-PrioritizeNotesResult](/images/test_prioritize_notes_02.PNG)
 
 ### Funcionalidade de filtro das notas:
-![Test-PrioritizeNotesResult](/images/test_filter_notes.png)
+
+![Test-PrioritizeNotesResult](/images/test_filter_notes.PNG)
 
 1. Digite o texto que deseja procurar;
 2. Clique no botão pesquisar;
 3. Para listar todos os itens novamente, apague o que foi digitado na pesquisa e clique no botão pesquisar.
+
+### Funcionalidade de edição das notas
+
+1. Adicionado na nota um novo botão para chamada da interface de edição:
+
+![Test-EditNote](/images/test_edit_note_01.PNG)
+
+2. Após clicar no botão será exibida uma tela com a possibilidade de alterar o texto da nota e alterar a opção urgente.
+
+![Test-EditNote](/images/test_edit_note_02.PNG)
+
+3.  Depois de realizar a alteração que deseja, basta clicar em salvar e a alteração será concluida.
+
+![Test-EditNote](/images/test_edit_note_03.PNG)
+
 
 ## REFERÊNCIAS
 
@@ -74,3 +92,6 @@ Inicie o ambiente utilizando o comando: `npm run dev`
 - [Conteúdo/Tutorial](https://regular-diver-ad6.notion.site/ReactJS-1cc9a8c21e434804b97f03d034a37c14)
 - [Git rebase squash: Melhorando o historico](https://medium.com/cwi-software/utilizando-rebase-e-squash-para-melhorar-o-hist%C3%B3rico-do-git-fdb2d952c09c)
 - [Styled Icons: Search](https://styled-icons.dev/?s=)
+- [JavaScript - Find and replace in array](https://inspiredwebdev.com/find-replace-in-array/)
+- [JavaScrit - Array Find Index Object Property](https://bobbyhadz.com/blog/javascript-array-find-index-of-object-by-property)
+- [JavaScript - Splice](https://www.javascripttutorial.net/javascript-array-splice/)

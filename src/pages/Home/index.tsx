@@ -15,17 +15,18 @@ function Home() {
   const { handleLogout, authenticated } = useContext(Context);
   const [notes, setNotes] = useState<Note[]>([] as Note[]);
   const [showModal, setShowModal] = useState(false);
+  const [showModalEdit, setShowModalEdit] = useState(false);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  
+  const [editNoteItem, setEditNoteItem] = useState<Note>();
   const navigate = useNavigate();
 
   useEffect(() => {
     listNote();
   }, []);
 
-
   const listNote =  async () => {
+    setLoading(true);
     const response = await NotesService.getNotes();
     setNotes(response.data);
     setLoading(false);
@@ -34,30 +35,59 @@ function Home() {
   const createNote = useCallback(
     (payload: FormValueState) => {
       (async () => {
+        setShowModal(false);
         setLoading(true);
         const response = await NotesService.postNotes(payload);
-        resetSearch();
-        setShowModal(false);
+        setNotes([...notes, response.data]);
+        setLoading(false);
+      })();
+    },
+    [notes]
+  );
+  
+  const updateNote = useCallback((payload: FormValueState) => {
+      (async () => {
+        setShowModalEdit(false);
+        setLoading(true);
+        await NotesService.alterNote(payload);
+        setLoading(false);
+        selectNote(payload.id);
       })();
     },
     [notes]
   );
 
+  const selectNote = useCallback((id: number) => {
+      (async () => {
+        setLoading(true);
+        const response = await NotesService.getNote({id});
 
-  const resetSearch = async () => {
-    setSearch("");
-    const response = await NotesService.getNotes();
-    setNotes([...response.data]) 
-    setLoading(false);
-  }
+        let index = notes.findIndex(nota => {
+          return nota.id === response.data.id;
+        });
+
+        notes.splice(index, 1, response.data);
+        setNotes(notes);
+        setLoading(false);
+      })();
+    },
+    [notes]
+  );
 
   const deleteNote = useCallback((id: number) => {
     if(window.confirm("Deseja mesmo excluir a nota " + id + "?")) {     
       (async () => {
+        setLoading(true);
         await NotesService.deleteNote({ id });
         setNotes((prevState) => prevState.filter((note) => note.id !== id));
+        setLoading(false);
       })();
     }
+  }, [notes]);
+
+  const editNote = useCallback((id: number) => {
+    setShowModalEdit(true);
+    setEditNoteItem(notes.filter(x => x.id === id)[0]);
   }, [notes]);
 
   const prioritizeNotes = useCallback(() => {
@@ -90,12 +120,25 @@ function Home() {
           <FormNote handleSubmit={createNote} />
         </Modal>
       )}
+
       <SearchSection handleSearch={filterNotes} onTextChange={handleSearchChange} search={search}></SearchSection>
+
+      {showModalEdit && (
+        <Modal
+          title="Alterar nota"
+          handleClose={() => setShowModalEdit(false)}
+          style={{ width: "100px" }}
+        >
+          <FormNote note={editNoteItem} handleSubmit={updateNote} />
+        </Modal>
+      )}
+
       <Container>
         {notes.map((note) => (
           <CardNote
             key={note.id}
             handleDelete={deleteNote}
+            handleEdit={editNote}
             note={note}
           ></CardNote>
         ))}
