@@ -61,7 +61,7 @@ function Home() {
   }, [notes]);
 
   const prioritizeNotes = useCallback(() => {
-    notes.sort((a: Note, b: Note) => (a.urgent < b.urgent) ? 1 : -1);
+    notes.sort((nota) => (nota.urgent == true) ? -1 : 0);
     setNotes([...notes]);
   }, [notes]);
 
