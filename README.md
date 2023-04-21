@@ -63,8 +63,11 @@ Inicie o ambiente utilizando o comando: `npm run dev`
 ### Funcionalidade de edição das notas
 
 1. Adicionado na nota um novo botão para chamada da interface de edição:
-
 ![Test-EditNote](/images/test_edit_note_01.PNG)
+2. Após clicar no botão será exibida uma tela com a possibilidade de alterar o texto da nota e incluir a opção urgente.
+![Test-EditNote](/images/test_edit_note_02.PNG)
+3.  Depois de realizar a alteração que deseja basta clicar em salvar e a alteração será concluida.
+![Test-EditNote](/images/test_edit_note_03.PNG)
 
 
 ## REFERÊNCIAS
