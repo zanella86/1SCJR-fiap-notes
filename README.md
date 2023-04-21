@@ -74,3 +74,6 @@ Inicie o ambiente utilizando o comando: `npm run dev`
 - [Conteúdo/Tutorial](https://regular-diver-ad6.notion.site/ReactJS-1cc9a8c21e434804b97f03d034a37c14)
 - [Git rebase squash: Melhorando o historico](https://medium.com/cwi-software/utilizando-rebase-e-squash-para-melhorar-o-hist%C3%B3rico-do-git-fdb2d952c09c)
 - [Styled Icons: Search](https://styled-icons.dev/?s=)
+- [JavaScript - Find and replace in array](https://inspiredwebdev.com/find-replace-in-array/)
+- [JavaScrit - Array Find Index Object Property](https://bobbyhadz.com/blog/javascript-array-find-index-of-object-by-property)
+- [JavaScript - Splice](https://www.javascripttutorial.net/javascript-array-splice/)

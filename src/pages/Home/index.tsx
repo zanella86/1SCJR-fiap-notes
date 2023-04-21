@@ -2,7 +2,6 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import CardNote from "../../components/CardNote";
 import FabButton from "../../components/FabButton";
 import FormNote, { FormValueState } from "./FormNote";
-import FormNoteEdit, {FormEditValueState} from "./FormNoteEdit";
 import Modal from "../../components/Modal";
 import { NotesService } from "../../services/notes/note-service";
 import { Note } from "../../services/notes/types";
@@ -17,12 +16,12 @@ function Home() {
   const [showModal, setShowModal] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
   const [loading, setLoading] = useState(true);
-  //let editNoteItem = undefined;
   const [editNoteItem, setEditNoteItem] = useState<Note>();
   const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
+      setLoading(true);
       const response = await NotesService.getNotes();
       setNotes(response.data);
       setLoading(false);
@@ -32,21 +31,41 @@ function Home() {
   const createNote = useCallback(
     (payload: FormValueState) => {
       (async () => {
+        setShowModal(false);
+        setLoading(true);
         const response = await NotesService.postNotes(payload);
         setNotes([...notes, response.data]);
-        setShowModal(false);
+        setLoading(false);
       })();
     },
     [notes]
   );
   
-  const ediNote = useCallback((payload: FormEditValueState) => {
+  const updateNote = useCallback((payload: FormValueState) => {
       (async () => {
-        const response = await NotesService.postNotes(payload);
-        setNotes([...notes, response.data]);
-        setShowModal(false);
+        setShowModalEdit(false);
+        setLoading(true);
+        await NotesService.alterNote(payload);
+        setLoading(false);
+        selectNote(payload.id);
       })();
-        //  window.alert("Nota: " + id + "\nTo implement...");
+    },
+    [notes]
+  );
+
+  const selectNote = useCallback((id: number) => {
+      (async () => {
+        setLoading(true);
+        const response = await NotesService.getNote({id});
+
+        let index = notes.findIndex(nota => {
+          return nota.id === response.data.id;
+        });
+
+        notes.splice(index, 1, response.data);
+        setNotes(notes);
+        setLoading(false);
+      })();
     },
     [notes]
   );
@@ -54,17 +73,17 @@ function Home() {
   const deleteNote = useCallback((id: number) => {
     if(window.confirm("Deseja mesmo excluir a nota " + id + "?")) {     
       (async () => {
+        setLoading(true);
         await NotesService.deleteNote({ id });
         setNotes((prevState) => prevState.filter((note) => note.id !== id));
+        setLoading(false);
       })();
     }
   }, [notes]);
 
   const editNote = useCallback((id: number) => {
-    
     setShowModalEdit(true);
     setEditNoteItem(notes.filter(x => x.id === id)[0]);
- 
   }, [notes]);
 
   const prioritizeNotes = useCallback(() => {
@@ -94,10 +113,7 @@ function Home() {
           handleClose={() => setShowModalEdit(false)}
           style={{ width: "100px" }}
         >
-          <FormNoteEdit 
-            note={editNoteItem}
-            handleSubmit={ediNote} 
-          ></FormNoteEdit>
+          <FormNote note={editNoteItem} handleSubmit={updateNote} />
         </Modal>
       )}
       <Container>

@@ -1,7 +1,6 @@
-import React, {
+import {
   ChangeEvent,
   FormEvent,
-  FormEventHandler,
   useCallback,
   useState,
 } from "react";
@@ -11,18 +10,23 @@ import Checkbox from "../../../components/Checkbox";
 import { Form } from "./styles";
 
 export interface FormValueState {
+  id: number;
   text: string;
-  urgent: boolean;
+  date: Date;
+  urgent: boolean; 
 }
 
 interface FormNoteProps {
+  note?: Note;
   handleSubmit: (payload: FormValueState) => void;
 }
 
-function FormNote({ handleSubmit }: FormNoteProps) {
+function FormNote({ note, handleSubmit }: FormNoteProps) {
   const [formValues, setFormValues] = useState<FormValueState>({
-    text: "",
-    urgent: false,
+    id: note?.id || 0,
+    text: note?.text || "",
+    date: note?.date || new Date(),
+    urgent: note?.urgent || false,
   });
 
   const handleChangeUrgent = useCallback(() => {
