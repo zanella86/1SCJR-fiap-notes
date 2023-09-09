@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "homepage": "https://zanella86.github.io/fiap-notes",
   "scripts": {
+    "deploy": "vite build && gh-pages -d dist",
     "dev": "vite",
     "test": "jest",
     "build": "tsc && vite build",
