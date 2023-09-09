@@ -2,9 +2,9 @@ name: Pipeline CI
 
 on:
   push:
-    branches: [ "pedro-teste" ]
+    branches: [ "pedro-test" ]
   pull_request:
-    branches: [ "pedro-teste" ]
+    branches: [ "pedro-test" ]
 
 jobs:
   setup:
