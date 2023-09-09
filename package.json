@@ -5,6 +5,7 @@
   "homepage": "https://zanella86.github.io/fiap-notes",
   "scripts": {
     "dev": "vite",
+    "test": "jest",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },
