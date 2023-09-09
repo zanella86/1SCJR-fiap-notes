@@ -7,42 +7,37 @@ on:
     branches: [ "pedro-test" ]
 
 jobs:
+  checkout: 
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: List directories for debug
+      run: |
+        pwd
+        ls -al
+
   setup:
     runs-on: ubuntu-latest
-    
+    needs: checkout
     strategy:
       matrix:
         node-version: [14.x]
         
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-      
     - name: Set up Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-      
-    - name: Cache node modules
-      uses: actions/cache@v2
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
 
     - name: Clear npm cache
       run: npm cache clean --force
+      working-directory: /home/runner/work/1SCJR-fiap-notes/1SCJR-fiap-notes/
       
     - name: Install dependencies
       run: npm install
-
-  build:
-    runs-on: ubuntu-latest
-    needs: setup
-    steps:
-    - name: Build
-      run: npm run build --if-present
+      working-directory: /home/runner/work/1SCJR-fiap-notes/1SCJR-fiap-notes/
       
   test:
     runs-on: ubuntu-latest
@@ -50,6 +45,15 @@ jobs:
     steps:
     - name: Run the tests
       run: npm test
+      working-directory: /home/runner/work/1SCJR-fiap-notes/1SCJR-fiap-notes/
+      
+  build:
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+    - name: Build
+      run: npm run build --if-present
+      working-directory: /home/runner/work/1SCJR-fiap-notes/1SCJR-fiap-notes/
       
   deploy:
     runs-on: ubuntu-latest
@@ -61,6 +65,7 @@ jobs:
         git config --global user.email $user_email
         git remote set-url origin https://${github_token}@github.com/${repository}
         npm run deploy
+      working-directory: /home/runner/work/1SCJR-fiap-notes/1SCJR-fiap-notes/
       env:
         user_name: 'github-actions[bot]'
         user_email: 'github-actions[bot]@users.noreply.github.com'
