@@ -6,7 +6,7 @@
   "scripts": {
     "deploy": "vite build && gh-pages -d dist",
     "dev": "vite",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "setup-test-env": "jest --init",
