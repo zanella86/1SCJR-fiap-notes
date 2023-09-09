@@ -30,14 +30,14 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-
+    
     - name: Clear npm cache
       run: npm cache clean --force
-      working-directory: /home/runner/work/1SCJR-fiap-notes/1SCJR-fiap-notes/
+      working-directory: ${{ github.workspace }}
       
     - name: Install dependencies
       run: npm install
-      working-directory: /home/runner/work/1SCJR-fiap-notes/1SCJR-fiap-notes/
+      working-directory: ${{ github.workspace }}
       
   test:
     runs-on: ubuntu-latest
