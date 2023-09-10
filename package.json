@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "test": "jest",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build --mode production",
     "preview": "vite preview",
     "setup-test-env": "jest --init",
     "create-jest-config": "echo '{ \"preset\": \"ts-jest/presets/js-with-ts\", \"testEnvironment\": \"jsdom\" }' > jest.config.js"
