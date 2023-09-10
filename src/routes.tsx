@@ -36,7 +36,7 @@ function AppRoutes() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route element={<PrivateRoute authenticated={authenticated} />}>
-          <Route path="home" element={<Home />} />
+          <Route path="login" element={<Login />} />
         </Route>
         <Route path="register" element={<Register />} />
       </Routes>
