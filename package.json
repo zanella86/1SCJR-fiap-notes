@@ -4,10 +4,11 @@
   "version": "0.1.0",
   "homepage": "https://zanella86.github.io/1SCJR-fiap-notes/",
   "scripts": {
-    "deploy": "vite build && gh-pages -d dist",
     "dev": "vite",
     "test": "jest --passWithNoTests",
     "build": "tsc && vite build",
+    "predeploy": "npm run build",
+    "deploy": "vite build && gh-pages -d dist",
     "preview": "vite preview",
     "setup-test-env": "jest --init",
     "create-jest-config": "echo '{ \"preset\": \"ts-jest/presets/js-with-ts\", \"testEnvironment\": \"jsdom\" }' > jest.config.js"
