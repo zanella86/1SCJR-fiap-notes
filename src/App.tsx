@@ -3,7 +3,7 @@ import { GlobalStyles } from "./GlobalStyles";
 import AppRoutes from "./routes";
 
 function App() {
-  console.log(import.meta.env.MODE);
+  //console.log(import.meta.env.MODE);
   return (
     <>
       <GlobalStyles />
