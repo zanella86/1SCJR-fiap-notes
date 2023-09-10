@@ -8,5 +8,4 @@ export default defineConfig({
     port: 3001,
   },
   publicDir: "assets",
-  mode: 'production',
 });
