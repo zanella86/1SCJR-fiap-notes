@@ -53,7 +53,7 @@ Error generating stack: `+i.message+`
   :root {
     --primary:  #ed145b;
     --white: #EEEEEE;
-    --gray: #CCA;
+    --gray: #321;
     --bgPrimary: #00000099;
     --overlayLight: #00000033;
     --whiteTransparent: #FFFC;
