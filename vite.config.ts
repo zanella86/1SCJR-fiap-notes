@@ -5,8 +5,8 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   base: "/1SCJR-fiap-notes/",
-  server: {
-    port: 3001,
-  },
+  //server: {
+  //  port: 3001,
+  //},
   publicDir: "assets",
 });
