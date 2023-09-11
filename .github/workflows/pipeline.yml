@@ -93,11 +93,15 @@ jobs:
         git config --global user.name $user_name
         git config --global user.email $user_email
         git remote set-url origin https://${github_token}@github.com/${repository}
-      env:
+        
+    - name: Build
+      run: npm run build
+      
+    - name: Deploy to Github Pages
+      uses: actions/setup-node@v3  
+      with:
         user_name: 'github-actions[bot]'
         user_email: 'github-actions[bot]@users.noreply.github.com'
         github_token: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
+        publish_dir: ./build
         repository: ${{ github.repository }}
-
-    - name: Build
-      run: npm run build
